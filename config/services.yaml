@@ -6,13 +6,21 @@
 parameters:
 
 services:
+    kernel.listener.prefix:
+        class: App\EventListener\TablePrefixEventListener
+        # Adding the table_prefix configuration
+        calls:
+            - [ setConfig, [ '%table_prefix%' ] ]
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata, method: loadClassMetadata }
+            
     App\EventListener\AccessDeniedListener:
         tags: [kernel.event_listener]
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+    
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
