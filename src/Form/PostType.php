@@ -20,13 +20,25 @@ class PostType extends AbstractType
                 'choice_label' => 'name',
                 'attr' => ['class' => 'form-select']
             ])
-            ->add('title')
-            ->add('description')
-            ->add('image')
-            ->add('content')
+            ->add('title',null,[
+            'label_attr' => ['class'=>'form-label'],
+            'attr'       => ['class'=>'form-control','popo' => 'manger']
+            ])
+            ->add('description',null,[
+                'label_attr' => ['class'=>'form-label'],
+                'attr'       => ['class'=>'form-control']
+                ])
+            ->add('image',null,[
+                'label_attr' => ['class'=>'form-label'],
+                'attr'       => ['class'=>'form-control']
+                ])
+            ->add('content',null,[
+                'label_attr' => ['class'=>'form-label'],
+                'attr'       => ['class'=>'form-control']
+                ])
             ->add('pinned')
-            ->add('createdAt')
-            ->add('updatedAt')
+            // ->add('createdAt')
+            // ->add('updatedAt')
             ->add('tags',EntityType::class,[
                 'class' => Tag::class,
                 'choice_label' => 'name',

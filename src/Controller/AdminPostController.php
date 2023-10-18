@@ -30,6 +30,9 @@ class AdminPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $post->setAuthor($this->getUser());
+            $post->setCreatedAt(new \DateTimeImmutable());
+            $post->setUpdatedAt(new \DateTimeImmutable());
             $entityManager->persist($post);
             $entityManager->flush();
 
@@ -57,6 +60,7 @@ class AdminPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $post->setUpdatedAt(new \DateTimeImmutable());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_post_index', [], Response::HTTP_SEE_OTHER);
