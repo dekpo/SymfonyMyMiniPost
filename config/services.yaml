@@ -6,6 +6,8 @@
 parameters:
 
 services:
+    App\EventListener\AccessDeniedListener:
+        tags: [kernel.event_listener]
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
