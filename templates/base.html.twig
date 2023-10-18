@@ -57,6 +57,10 @@
 										<li>
 											<a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
 										</li>
+										{% elseif app.user %}
+										<li>
+											<a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+										</li>
 										{% else %}
 										<li>
 											<a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
