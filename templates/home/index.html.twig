@@ -1,14 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Welcome to {{ site_title }} !
+{% endblock %}
 
 {% block body %}
 
-
-<section>
-
-    <h1 class="text-center">MY MINI POSTS</h1>
-
-    
-</section>
+	<h1 class="text-center m-3" data-aos="fade-down">M<img class="navbar_logo" src="{{asset('assets/img/3186856_geek_movie_spok_star_treck_icon_home.png')}}" alt="Mini Post Logo">
+		{{ site_title }}</h1>
+		<h4 class="text-center fw-light mb-4" data-aos="fade-up">Proudly powered by {{ site_copyright }}</h4>
+	<section class="container-fluid">
+		<div class="row">
+			{% for post in posts %}
+				<article class="col-12 col-md-6 ol-md-3" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="150">
+					<div class="card rounded-0 mb-4">
+						<img src="{{ post.image }}" class="card-img-top rounded-0" alt="{{ post.title }}">
+						<div class="card-body">
+							<p>
+							<a class="btn btn-secondary btn-normal" href="./category/{{ post.category.slug }}">{{ post.category.name }}</a>
+							{% for tag in post.getTags() %}
+							<a class="btn btn-outline-dark btn-sm" href="./tag/{{ tag.slug }}">{{ tag.name }}</a>
+							{% endfor %}
+							</p>
+							<h5 class="card-title">{{ post.title }}</h5>
+							<p class="card-text">{{ post.description|slice(0, 125) }}...</p>
+							<p class="card-text text-end fw-light fst-italic">{{ post.author.name }} {{ post.updatedAt|date("d/m/Y H:i") }}</p>
+							<a href="#" class="btn btn-dark">Read More</a>
+						</div>
+					</div>
+				</article>
+			{% else %}
+				<article class="col-12">
+					<span>no post found ;(</span>
+				</article>
+			{% endfor %}
+		</div>
+	</section>
 {% endblock %}
