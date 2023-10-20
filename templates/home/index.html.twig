@@ -14,7 +14,7 @@
 	<section class="container-fluid">
 		<div class="row">
 			{% for post in posts %}
-				<article class="col-12 col-md-6 ol-md-3" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="150">
+				<article class="col-12 col-sm-6 col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="150">
 					<div class="card border-dark rounded-0 mb-4">
 						<img src="{{ post.image }}" class="card-img-top rounded-0" alt="{{ post.title }}">
 						<div class="card-body">
@@ -27,12 +27,14 @@
 							<h5 class="card-title">{{ post.title }}</h5>
 							<p class="card-text">{{ post.description|slice(0, 125) }}...</p>
 							<footer class="card-text containe-fluid">
+							<div class="row">
 								<div class="col-6">
 									<a href="#" class="btn btn-dark">Read More</a>
 								</div>
 								<div class="col-6 text-end fw-light fst-italic">{{ post.author.name }}
 									{{ post.updatedAt|date("d/m/Y H:i") }}
 								</div>
+							</div>
 							</footer>
 						</div>
 					</div>

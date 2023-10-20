@@ -16,6 +16,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -23,8 +26,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, private Security $security)
+    private $mailerInterface;
+
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private Security $security, MailerInterface $mailerInterface)
     {
+        $this->mailerInterface = $mailerInterface;
     }
 
     public function authenticate(Request $request): Passport
@@ -48,9 +54,25 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-        
-        
+
+
         $user = $this->security->getUser();
+
+        $email = (new Email())
+        ->from(new Address($_ENV['MAIL_FROM'], 'Mailtrap'))
+	    ->to('newuser@example.com')
+	    ->cc('mailtrapqa@example.com')
+	    ->addCc('staging@example.com')
+	    ->bcc('mailtrapdev@example.com')
+	    ->replyTo('mailtrap@example.com')
+	    ->subject('New user logged in: ' . $user->getUserIdentifier())
+ 	    ->text('Hey! Learn the best practices of building HTML emails and play with ready-to-go templates. Mailtrap’s Guide on How to Build HTML Email is live on our blog')
+         ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $this->mailerInterface->send($email);
+        
+        
+        
         if ( !in_array('ROLE_ADMIN',$user->getRoles()) ){
             return new RedirectResponse($this->urlGenerator->generate('app_home')); 
         }
